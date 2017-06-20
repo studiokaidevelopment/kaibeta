@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bookingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.studiokai.kaibeta.BookingActivity"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/studio_kai"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Studio Kai"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark" />
+
+    <TextView
+        android:id="@+id/text_street_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/studio_kai"
+        android:text="16269 W Woodbine Circle"/>
+
+    <TextView
+        android:id="@+id/text_city_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_street_name"
+        android:text="Vernon Hills, IL 60061"/>
+
+    <TextView
+        android:id="@+id/text_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/studio_kai"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:text="2017/6/15"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/text_output"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_city_name"
+        android:paddingTop="8dp"
+        android:textStyle="bold"
+        android:textColor="@color/colorAccent"
+        android:visibility="gone"/>
+
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/events_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_output"
+        android:paddingTop="10dp"
+        android:paddingBottom="5dp"
+        tools:context="com.studiokai.kaibeta.BookingActivity"
+        tools:listitem="@layout/item_list"/>
+
+    <TextView
+        android:id="@+id/text_booking_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Check availability"
+        android:textColor="@color/colorAccent"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/button_update"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:text="Select Date" />
+
+    <Button
+        android:id="@+id/button_book_it"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/button_update"
+        android:text="Book It"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

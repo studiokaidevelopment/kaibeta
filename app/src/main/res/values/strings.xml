@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">KaiBeta</string>
+    <string name="hello_blank_fragment">Blank Fragment</string>
+
+    <string name="team_joe">
+        Joe is a an eclectic visionary with a wide variety of experience with sound design. He can tackle any project head on, adding his own creative energy to keep every track expressive and innovative.
+        Formerly of the band Between Myth &amp; Legend, Joe made his way into the world of audio production 4 years ago, with a plethora of music business expertise to follow.
+        His wide range of creativity will play a crucial role in your experience.
+    </string>
+</resources>
