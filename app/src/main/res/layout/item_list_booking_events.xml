@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="@drawable/list_gradient">
+
+    <TextView
+        android:id="@+id/text_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Event 1"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        />
+
+    <TextView
+        android:id="@+id/text_start_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_event"
+        android:text="10:00"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/text_dash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_event"
+        android:layout_toRightOf="@+id/text_start_time"
+        android:layout_toEndOf="@+id/text_start_time"
+        android:text=" - "
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/text_end_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_event"
+        android:layout_toRightOf="@+id/text_dash"
+        android:layout_toEndOf="@+id/text_dash"
+        android:text="11:00"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_start_time"
+        android:layout_marginTop="24dp"
+        android:text="Event Title"
+        android:textSize="12sp" />
+
+    <EditText
+        android:id="@+id/edit_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_title"
+        android:text="Studio Kai Session"
+        android:textSize="16sp"
+        android:inputType="textCapWords"
+        />
+
+    <TextView
+        android:id="@+id/text_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_title"
+        android:layout_marginTop="8dp"
+        android:text="Description"
+        android:textSize="12sp"/>
+
+    <EditText
+        android:id="@+id/edit_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_description"
+        android:text="1 hour of studio time"
+        android:textSize="16sp"
+        android:inputType="text"
+        />
+
+    <TextView
+        android:id="@+id/text_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_description"
+        android:layout_marginTop="8dp"
+        android:text="Location"
+        android:textSize="12sp"/>
+
+    <EditText
+        android:id="@+id/edit_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_location"
+        android:text="16269 W Woodbine Circle\nVernon Hills, IL 60061"
+        android:textSize="16sp"
+        android:inputType="none"
+        android:focusable="false"/>
+
+    <TextView
+        android:id="@+id/text_attendees"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_location"
+        android:layout_marginTop="8dp"
+        android:text="Additional Guests"
+        android:textSize="12sp"/>
+
+    <EditText
+        android:id="@+id/edit_attendees"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_attendees"
+        android:hint="ex) tom@gmail.com, bob@gmail.com, etc..."
+        android:textSize="16sp"
+        android:inputType="text" />
+
+</RelativeLayout>

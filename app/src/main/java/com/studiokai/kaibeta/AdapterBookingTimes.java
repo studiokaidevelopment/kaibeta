@@ -15,12 +15,12 @@ import java.util.List;
  * Created by titusjuocepis on 6/19/17.
  */
 
-class AdapterBookingList extends RecyclerView.Adapter<AdapterBookingList.ViewHolder> {
+class AdapterBookingTimes extends RecyclerView.Adapter<AdapterBookingTimes.ViewHolder> {
 
     private List<ModelBookingListItem> bookingTimes;
     private View.OnClickListener clickListener;
 
-    AdapterBookingList(List<ModelBookingListItem> times, View.OnClickListener listener) {
+    AdapterBookingTimes(List<ModelBookingListItem> times, View.OnClickListener listener) {
         bookingTimes = times;
         clickListener = listener;
     }

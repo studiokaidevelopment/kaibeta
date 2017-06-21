@@ -23,10 +23,11 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
     private TextView mOutputText, mWarning;
     private Button buttonDateSelect, buttonBookIt;
     private RelativeLayout bookingLayout;
-    private AdapterBookingList mAdapter;
+    private RecyclerView.Adapter mAdapter;
     private List<ModelBookingListItem> bookingTimes;
     private KaiCalendar kaiCalendar;
     private BookingManager bookingManager;
+    private View.OnClickListener clickListener;
 
     private static DatePickerDialog.OnDateSetListener dateSetListener;
 
@@ -48,6 +49,7 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
         bookingTimes = new ArrayList<>();
         kaiCalendar = new KaiCalendar();
         bookingManager = new BookingManager();
+        clickListener = this;
     }
 
     @Override
@@ -68,15 +70,23 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
             @Override
             public void onClick(View v) {
 
-                List<String> attendees = new ArrayList<>();
-                attendees.add("tjuocepis@gmail.com");
+//                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.events_list);
+//                recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false));
+//                recyclerView.setAdapter(new AdapterBookingEvents(bookingTimes));
+//                recyclerView.getAdapter().notifyDataSetChanged();
 
-                ModelBookingListItem bookingTime = bookingTimes.get(0);
-                ModelEvent event = new ModelEvent(bookingTime.getStart(), bookingTime.getEnd(),
-                        "Studio Kai Session", "1 Hour of Recording",
-                        "16269 W Woodbine Circle, Vernon Hills, IL 60061", attendees);
+                updateUI("Events ready to book:", View.VISIBLE, "", View.GONE, null, View.VISIBLE,
+                         "Confirm", View.VISIBLE, new AdapterBookingEvents(bookingTimes));
 
-                kaiCalendar.insertEvent(event);
+//                List<String> attendees = new ArrayList<>();
+//                attendees.add("tjuocepis@gmail.com");
+//
+//                ModelBookingListItem bookingTime = bookingTimes.get(0);
+//                ModelEvent event = new ModelEvent(bookingTime.getStart(), bookingTime.getEnd(),
+//                        "Studio Kai Session", "1 Hour of Recording",
+//                        "16269 W Woodbine Circle, Vernon Hills, IL 60061", attendees);
+//
+//                kaiCalendar.insertEvent(event);
 
             }
         });
@@ -96,14 +106,15 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
                 if (dayOfWeek.equals("Sunday")) {
 
                     String warning = "We are not open on " + dayOfWeek;
-                    updateUI("", View.GONE, warning, View.VISIBLE, buttonDate, View.VISIBLE,
-                             View.GONE, new ArrayList<ModelBookingListItem>());
+                    updateUI("", View.GONE, warning, View.VISIBLE, buttonDate, View.VISIBLE, null,
+                             View.GONE, new AdapterBookingTimes(new ArrayList<ModelBookingListItem>(),
+                             clickListener));
                 }
                 else {
 
                     kaiCalendar.loadEvents(dateMin, dateMax);
                     String output = "Select Available Times:";
-                    updateUI(output, View.VISIBLE, "", View.GONE, buttonDate, View.VISIBLE,
+                    updateUI(output, View.VISIBLE, "", View.GONE, buttonDate, View.VISIBLE, null,
                              View.GONE, null);
                 }
             }
@@ -124,7 +135,8 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
     @Override
     public void onClick(View v) {
 
-        bookingTimes = mAdapter.getCheckedTimes();
+        AdapterBookingTimes timesAdapter = (AdapterBookingTimes) mAdapter;
+        bookingTimes = timesAdapter.getCheckedTimes();
 
         if (bookingTimes.isEmpty())
             buttonBookIt.setVisibility(View.GONE);
@@ -139,7 +151,7 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
     @Override
     public void onTimesReady(List<ModelBookingListItem> events) {
 
-        mAdapter = new AdapterBookingList(events, this);
+        mAdapter = new AdapterBookingTimes(events, this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.events_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(mAdapter);
@@ -155,19 +167,22 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
     // Helper Functions
 
     private void updateUI(String output, int outputVisibility, String warning, int warningVisibility,
-                          String dateButton, int dateButtonVisibility, int bookItButtonVisibility,
-                          List<ModelBookingListItem> events) {
+                          String dateButton, int dateButtonVisibility, String bookItButton,
+                          int bookItButtonVisibility, RecyclerView.Adapter adapter) {
 
         mOutputText.setText(output);
         mOutputText.setVisibility(outputVisibility);
         mWarning.setText(warning);
         mWarning.setVisibility(warningVisibility);
-        buttonDateSelect.setText(dateButton);
+        if (dateButton != null)
+            buttonDateSelect.setText(dateButton);
         buttonDateSelect.setVisibility(dateButtonVisibility);
+        if (bookItButton != null)
+            buttonBookIt.setText(bookItButton);
         buttonBookIt.setVisibility(bookItButtonVisibility);
 
-        if (events != null) {
-            mAdapter = new AdapterBookingList(events, this);
+        if (adapter != null) {
+            mAdapter = adapter;
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.events_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
             recyclerView.setAdapter(mAdapter);

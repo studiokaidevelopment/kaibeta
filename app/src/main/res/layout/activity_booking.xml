@@ -61,8 +61,7 @@
         android:layout_below="@+id/text_output"
         android:paddingTop="10dp"
         android:paddingBottom="5dp"
-        tools:context="com.studiokai.kaibeta.BookingActivity"
-        tools:listitem="@layout/item_list_booking_times"/>
+        tools:context="com.studiokai.kaibeta.BookingActivity" />
 
     <TextView
         android:id="@+id/text_warning"
