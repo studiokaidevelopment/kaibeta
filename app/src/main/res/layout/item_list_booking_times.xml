@@ -56,7 +56,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_centerInParent="true"
-        android:text="N/A"
+        android:text="Booked"
         android:textColor="@color/colorAccent"
         android:visibility="invisible"/>
 

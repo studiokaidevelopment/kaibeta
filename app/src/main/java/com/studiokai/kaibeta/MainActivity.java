@@ -108,8 +108,8 @@ public class MainActivity extends Activity {
         // Populate the Navigtion Drawer with options
         mDrawerPane = (RelativeLayout) findViewById(R.id.drawerPane);
         mDrawerList = (ListView) findViewById(R.id.navList);
-        DrawerListAdapter adapter = new DrawerListAdapter(this, mNavItems);
-        mDrawerList.setAdapter(adapter);
+        DrawerListAdapter mAdapter = new DrawerListAdapter(this, mNavItems);
+        mDrawerList.setAdapter(mAdapter);
 
         // Drawer Item click listeners
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {

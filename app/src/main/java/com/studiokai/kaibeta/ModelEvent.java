@@ -1,15 +1,16 @@
 package com.studiokai.kaibeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by titusjuocepis on 6/20/17.
  */
 
-public class ModelEvent {
+class ModelEvent {
 
-    private String mStart, mEnd, mSummary, mDescription, mLocation;
-    private List<String> mAttendees;
+    final String mStart, mEnd, mSummary, mDescription, mLocation;
+    final List<String> mAttendees;
 
     ModelEvent(String start, String end, String summary, String description, String location,
                List<String> attendees) {
@@ -20,5 +21,14 @@ public class ModelEvent {
         mDescription = description;
         mLocation = location;
         mAttendees = attendees;
+    }
+
+    ModelEvent(String start, String end) {
+        mStart = start;
+        mEnd = end;
+        mSummary = "";
+        mDescription = "";
+        mLocation = "";
+        mAttendees = new ArrayList<>();
     }
 }
