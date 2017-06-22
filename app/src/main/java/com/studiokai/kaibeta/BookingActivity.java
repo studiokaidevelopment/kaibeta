@@ -1,8 +1,10 @@
 package com.studiokai.kaibeta;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -24,10 +26,12 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
     private Button buttonDateSelect, buttonBookIt;
     private RelativeLayout bookingLayout;
     private RecyclerView.Adapter mAdapter;
-    private List<ModelBookingListItem> bookingTimes;
+    private List<ModelBookingListItem> loadedTimes;
+    private List<ModelBookingListItem> selectedTimes;
     private KaiCalendar kaiCalendar;
     private BookingManager bookingManager;
     private View.OnClickListener clickListener;
+
 
     private static DatePickerDialog.OnDateSetListener dateSetListener;
 
@@ -46,7 +50,7 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
         buttonDateSelect = (Button) findViewById(R.id.button_update);
         buttonBookIt = (Button) findViewById(R.id.button_book_it);
 
-        bookingTimes = new ArrayList<>();
+        selectedTimes = new ArrayList<>();
         kaiCalendar = new KaiCalendar();
         bookingManager = new BookingManager();
         clickListener = this;
@@ -70,24 +74,19 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
             @Override
             public void onClick(View v) {
 
-//                RecyclerView recyclerView = (RecyclerView) findViewById(R.id.events_list);
-//                recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false));
-//                recyclerView.setAdapter(new AdapterBookingEvents(bookingTimes));
-//                recyclerView.getAdapter().notifyDataSetChanged();
+                if (buttonBookIt.getText().toString().equals("Book It")) {
 
-                updateUI("Events ready to book:", View.VISIBLE, "", View.GONE, null, View.VISIBLE,
-                         "Confirm", View.VISIBLE, new AdapterBookingEvents(bookingTimes));
+                    updateUI("Events ready to book:", View.VISIBLE, "", View.GONE, null, View.VISIBLE,
+                            "Confirm", View.VISIBLE, new AdapterBookingEvents(createEventsFromSelectedTimes(selectedTimes)));
+                }
+                else {
 
-//                List<String> attendees = new ArrayList<>();
-//                attendees.add("tjuocepis@gmail.com");
-//
-//                ModelBookingListItem bookingTime = bookingTimes.get(0);
-//                ModelEvent event = new ModelEvent(bookingTime.getStart(), bookingTime.getEnd(),
-//                        "Studio Kai Session", "1 Hour of Recording",
-//                        "16269 W Woodbine Circle, Vernon Hills, IL 60061", attendees);
-//
-//                kaiCalendar.insertEvent(event);
+                    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.events_list);
+                    AdapterBookingEvents adapter = (AdapterBookingEvents) recyclerView.getAdapter();
+                    List<ModelEvent> events = adapter.getBookingEvents();
 
+                    showCreateEventDialog(events);
+                }
             }
         });
 
@@ -136,21 +135,18 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
     public void onClick(View v) {
 
         AdapterBookingTimes timesAdapter = (AdapterBookingTimes) mAdapter;
-        bookingTimes = timesAdapter.getCheckedTimes();
+        selectedTimes = timesAdapter.getCheckedTimes();
 
-        if (bookingTimes.isEmpty())
+        if (selectedTimes.isEmpty())
             buttonBookIt.setVisibility(View.GONE);
         else
             buttonBookIt.setVisibility(View.VISIBLE);
-
-        for (int i = 0; i < bookingTimes.size(); i++) {
-            Toast.makeText(this, bookingTimes.get(i).getStart(), Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
     public void onTimesReady(List<ModelBookingListItem> events) {
 
+        loadedTimes = events;
         mAdapter = new AdapterBookingTimes(events, this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.events_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -165,6 +161,20 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
 
 
     // Helper Functions
+
+    private List<ModelEvent> createEventsFromSelectedTimes(List<ModelBookingListItem> selectedTimes) {
+
+        List<ModelEvent> events = new ArrayList<>();
+
+        for (ModelBookingListItem item : selectedTimes) {
+
+            events.add(new ModelEvent(item.getStart(), item.getEnd(), "Studio Kai Session",
+                    "1 hour of studio time", "16269 W Woodbine Circle, Vernon Hills IL 60061",
+                    new ArrayList<String>()));
+        }
+
+        return events;
+    }
 
     private void updateUI(String output, int outputVisibility, String warning, int warningVisibility,
                           String dateButton, int dateButtonVisibility, String bookItButton,
@@ -213,7 +223,7 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
         return dateMax;
     }
 
-    public String toRFC3339(int year, int month, int day, int h, int m, int s) {
+    private String toRFC3339(int year, int month, int day, int h, int m, int s) {
 
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, day, h, m, s);
@@ -223,6 +233,48 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
         return sdf.format(date);
     }
 
+    private void showCreateEventDialog(final List<ModelEvent> events) {
+
+        final int nEvents = events.size();
+
+        final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setCancelable(false);
+        String endOfMessage = nEvents > 1 ? nEvents+"\n1 hour sessions with STUDIO KAI"
+                                          : nEvents+"\n1 hour session with STUDIO KAI";
+        alertDialogBuilder.setMessage("Are you sure you would like to create " + endOfMessage);
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                for (ModelEvent item : events) {
+
+                    item.mAttendees.add("tjuocepis@gmail.com");
+
+                    ModelEvent event = new ModelEvent(item.mStart, item.mEnd,
+                            item.mSummary, item.mDescription,
+                            "16269 W Woodbine Circle, Vernon Hills, IL 60061", item.mAttendees);
+
+                    kaiCalendar.insertEvent(event);
+                }
+
+                updateUI("Select Available Times", View.VISIBLE, "", View.GONE, "Select Date",
+                        View.VISIBLE, null, View.GONE, new AdapterBookingTimes(
+                                new ArrayList<ModelBookingListItem>(), clickListener));
+
+                Toast.makeText(BookingActivity.this, "STUDIO KAI thanks you! The " + nEvents +
+                        " should events should appear in your Calendar shortly",
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialogBuilder.create().show();
+    }
 
 
     // Date Picker Dialog

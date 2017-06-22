@@ -9,8 +9,8 @@ import java.util.List;
 
 class ModelEvent {
 
-    final String mStart, mEnd, mSummary, mDescription, mLocation;
-    final List<String> mAttendees;
+    String mStart, mEnd, mSummary, mDescription, mLocation;
+    List<String> mAttendees;
 
     ModelEvent(String start, String end, String summary, String description, String location,
                List<String> attendees) {

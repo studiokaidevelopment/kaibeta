@@ -29,7 +29,7 @@ class AdapterBookingTimes extends RecyclerView.Adapter<AdapterBookingTimes.ViewH
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_list_booking_times, parent, false);
+                .inflate(R.layout.item_booking_times_list, parent, false);
 
         return new ViewHolder(view);
     }

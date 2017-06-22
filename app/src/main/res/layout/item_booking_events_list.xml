@@ -6,15 +6,23 @@
     android:padding="16dp"
     android:background="@drawable/list_gradient">
 
-    <TextView
-        android:id="@+id/text_event"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Event 1"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorPrimaryDark"
+    <!--<TextView-->
+        <!--android:id="@+id/text_event"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Event 1"-->
+        <!--android:textSize="24sp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textColor="@color/colorPrimaryDark"-->
         />
+
+    <View
+        android:id="@+id/text_event"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginBottom="8dp"/>
+
 
     <TextView
         android:id="@+id/text_start_time"
@@ -22,7 +30,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_event"
         android:text="10:00"
-        android:textSize="16sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         android:textColor="@color/colorAccent"/>
 
     <TextView
@@ -33,7 +42,8 @@
         android:layout_toRightOf="@+id/text_start_time"
         android:layout_toEndOf="@+id/text_start_time"
         android:text=" - "
-        android:textSize="16sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         android:textColor="@color/colorAccent"/>
 
     <TextView
@@ -44,7 +54,8 @@
         android:layout_toRightOf="@+id/text_dash"
         android:layout_toEndOf="@+id/text_dash"
         android:text="11:00"
-        android:textSize="16sp"
+        android:textSize="24sp"
+        android:textStyle="bold"
         android:textColor="@color/colorAccent"/>
 
     <TextView
@@ -52,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text_start_time"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:text="Event Title"
         android:textSize="12sp" />
 

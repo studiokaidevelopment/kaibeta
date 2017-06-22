@@ -1,5 +1,7 @@
 package com.studiokai.kaibeta;
 
+import android.widget.EditText;
+
 import java.util.List;
 
 /**
