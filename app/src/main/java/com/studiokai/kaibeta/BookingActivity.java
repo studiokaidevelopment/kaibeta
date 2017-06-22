@@ -26,7 +26,6 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
     private Button buttonDateSelect, buttonBookIt;
     private RelativeLayout bookingLayout;
     private RecyclerView.Adapter mAdapter;
-    private List<ModelBookingListItem> loadedTimes;
     private List<ModelBookingListItem> selectedTimes;
     private KaiCalendar kaiCalendar;
     private BookingManager bookingManager;
@@ -146,7 +145,6 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
     @Override
     public void onTimesReady(List<ModelBookingListItem> events) {
 
-        loadedTimes = events;
         mAdapter = new AdapterBookingTimes(events, this);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.events_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
