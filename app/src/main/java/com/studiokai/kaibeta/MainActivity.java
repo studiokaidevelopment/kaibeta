@@ -1,13 +1,7 @@
 package com.studiokai.kaibeta;
 
-import android.app.DatePickerDialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTabHost;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -66,14 +60,31 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
+
+    private FragmentTabHost fragmentTabHost;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        Intent bookingIntent = new Intent(this, BookingActivity.class);
-        startActivity(bookingIntent);
+//        Intent bookingIntent = new Intent(this, BookingActivity.class);
+//        startActivity(bookingIntent);
+
+        fragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
+        fragmentTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
+
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tab1").setIndicator("Tab1"),
+                NewsFeedFragment.class, null);
+
+        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tab2").setIndicator("Tab2"),
+                BookingFragment.class, null);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     /*
