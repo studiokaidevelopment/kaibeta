@@ -53,7 +53,6 @@ public class BookingActivity extends Activity implements View.OnClickListener, B
         kaiCalendar = new KaiCalendar();
         bookingManager = new BookingManager();
         clickListener = this;
-        String s = "";
     }
 
     @Override
