@@ -1,5 +1,8 @@
 package com.studiokai.kaibeta;
 
+import android.graphics.Color;
+import android.graphics.drawable.Icon;
+import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.os.Bundle;
@@ -10,8 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TabWidget;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -66,6 +71,7 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -73,18 +79,44 @@ public class MainActivity extends FragmentActivity {
 //        startActivity(bookingIntent);
 
         fragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-        fragmentTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
-
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tab1").setIndicator("Tab1"),
-                NewsFeedFragment.class, null);
-
-        fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tab2").setIndicator("Tab2"),
-                BookingFragment.class, null);
     }
 
     @Override
     protected void onStart() {
+
         super.onStart();
+
+        fragmentTabHost.setup(getBaseContext(), getSupportFragmentManager(), R.id.realtabcontent);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tab1").setIndicator(null,
+                    getResources().getDrawable(R.drawable.ic_newsfeed,getTheme())),
+                    NewsFeedFragment.class, null);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tab2").setIndicator(null,
+                    getResources().getDrawable(R.drawable.ic_calendar,getTheme())),
+                    BookingFragment.class, null);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tab3").setIndicator(null,
+                    getResources().getDrawable(R.drawable.ic_shopping,getTheme())),
+                    ShoppingFragment.class, null);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tab4").setIndicator(null,
+                    getResources().getDrawable(R.drawable.ic_info,getTheme())),
+                    ContactsFragment.class, null);
+        }
+
+        TabWidget widget = fragmentTabHost.getTabWidget();
+
+//        for (int i = 0; i < widget.getChildCount(); i++) {
+//            View tabView = widget.getChildAt(i);
+//            TextView tabTitle = (TextView) tabView.findViewById(android.R.id.title);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//                tabTitle.setTextColor(getResources().getColor(R.color.colorPrimaryDark, getTheme()));
+//        }
     }
 
     /*
