@@ -1,12 +1,18 @@
 package com.studiokai.kaibeta;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,17 +20,23 @@ import java.util.List;
  * Created by titusjuocepis on 6/24/17.
  */
 
-public class KaiFacebook {
+class KaiFacebook {
 
     private List<ModelFBPost> fbPosts;
+    private NewsFeedListener mListener;
 
-    KaiFacebook() {
+    KaiFacebook(NewsFeedListener listener) {
         fbPosts = new ArrayList<>();
+        mListener = listener;
     }
 
     void loadPosts() {
         GetKaiFBNewsTask getPostsTask = new GetKaiFBNewsTask();
         getPostsTask.execute();
+    }
+
+    public List<ModelFBPost> getFbPosts() {
+        return fbPosts;
     }
 
     private class GetKaiFBNewsTask extends AsyncTask<String, Void, String> {
@@ -45,11 +57,11 @@ public class KaiFacebook {
                 jsonObject = new JSONObject(s);
             } catch (JSONException e) {
                 e.printStackTrace();
+                return;
             }
 
             JSONArray json = null;
             try {
-                assert jsonObject != null;
                 json = jsonObject.getJSONArray("posts");
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -79,7 +91,6 @@ public class KaiFacebook {
 
                     assert attachments != null;
                     for (int k = 0; k < attachments.length(); k++) {
-
                         try {
                             mAttachments.add(attachments.getString(k));
                         } catch (JSONException e) {
@@ -87,16 +98,60 @@ public class KaiFacebook {
                         }
                     }
 
-                    ModelFBPost post = new ModelFBPost(createdTime, message, story, mAttachments);
+                    ModelFBPost post = new ModelFBPost(createdTime, message, story, mAttachments,
+                            new ArrayList<Bitmap>());
                     fbPosts.add(post);
                 }
 
-                for (ModelFBPost post : fbPosts) {
-                    Log.d("[KaiFacebook] ---> ", post.createdTime);
-                    Log.d("[KaiFacebook] ---> ", post.message);
-                    Log.d("[KaiFacebook] ---> ", post.story);
-                }
+                mListener.onFBPostsLoaded(fbPosts);
+
+                GetBitmapsTask getBitmaps = new GetBitmapsTask(fbPosts);
+                getBitmaps.execute();
             }
         }
     };
+
+    private class GetBitmapsTask extends AsyncTask<String, Void, List<ModelFBPost>> {
+
+        List<ModelFBPost> mPosts;
+
+        GetBitmapsTask(List<ModelFBPost> posts) {
+            mPosts = posts;
+        }
+
+        @Override
+        protected List<ModelFBPost> doInBackground(String... params) {
+
+
+                List<Bitmap> images = new ArrayList<>();
+
+                for (ModelFBPost post : mPosts) {
+                    for (String mUrl : post.attachments) {
+
+                        try {
+                            URL url = new URL(mUrl);
+                            HttpURLConnection connection = null;
+                            connection = (HttpURLConnection) url.openConnection();
+                            connection.setDoInput(true);
+                            connection.connect();
+                            InputStream input = connection.getInputStream();
+                            post.images.add(BitmapFactory.decodeStream(input));
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }
+                }
+                return mPosts;
+        }
+
+        @Override
+        protected void onPostExecute(List<ModelFBPost> posts) {
+
+            super.onPostExecute(posts);
+
+            mListener.onFBPostImagesLoaded(posts);
+        }
+    }
 }

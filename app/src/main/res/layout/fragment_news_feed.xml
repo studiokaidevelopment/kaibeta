@@ -5,9 +5,12 @@
     tools:context="com.studiokai.kaibeta.NewsFeedFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/fb_post_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="News Feed Fragment" />
+        android:layout_height="wrap_content"
+        tools:context="com.studiokai.kaibeta.NewsFeedFragment" />
 
 </FrameLayout>

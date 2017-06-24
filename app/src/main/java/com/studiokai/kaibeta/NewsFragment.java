@@ -10,6 +10,10 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -45,9 +49,6 @@ public class NewsFragment extends Fragment {
             fragmentTabHost.addTab(fragmentTabHost.newTabSpec("tab2").setIndicator("Media"),
                     MediaFragment.class, null);
         }
-
-        KaiFacebook kaiFacebook = new KaiFacebook();
-        kaiFacebook.loadPosts();
 
         return v;
     }

@@ -5,7 +5,7 @@
     android:id="@+id/bookingLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.studiokai.kaibeta.BookingActivity"
+    tools:context="com.studiokai.kaibeta.BookingFragment"
     android:padding="8dp">
 
     <TextView
@@ -61,7 +61,7 @@
         android:layout_below="@+id/text_output"
         android:paddingTop="10dp"
         android:paddingBottom="5dp"
-        tools:context="com.studiokai.kaibeta.BookingActivity" />
+        tools:context="com.studiokai.kaibeta.BookingFragment" />
 
     <TextView
         android:id="@+id/text_warning"
