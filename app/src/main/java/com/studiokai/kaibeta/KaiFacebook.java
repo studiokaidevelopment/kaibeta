@@ -3,6 +3,7 @@ package com.studiokai.kaibeta;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ImageView;
 
 import org.json.JSONArray;
@@ -126,6 +127,9 @@ class KaiFacebook {
                 List<Bitmap> images = new ArrayList<>();
 
                 for (ModelFBPost post : mPosts) {
+
+                    boolean resizePic = true;
+
                     for (String mUrl : post.attachments) {
 
                         try {
@@ -134,8 +138,25 @@ class KaiFacebook {
                             connection = (HttpURLConnection) url.openConnection();
                             connection.setDoInput(true);
                             connection.connect();
+
                             InputStream input = connection.getInputStream();
-                            post.images.add(BitmapFactory.decodeStream(input));
+                            Bitmap fbPostPic = BitmapFactory.decodeStream(input);
+
+                            double width = fbPostPic.getWidth();
+                            double height = fbPostPic.getHeight();
+
+                            Log.d("[BITMAP] ---> ", width + " " + height);
+
+                            if (resizePic) {
+                                width = width * 2;
+                                height = height * 2;
+                                resizePic = false;
+                                post.images.add(Bitmap.createScaledBitmap(fbPostPic, (int)width,
+                                        (int)height, false));
+                            }
+                            else {
+                                post.images.add(Bitmap.createBitmap(fbPostPic, 0, 0, 720, 450));
+                            }
 
                         } catch (IOException e) {
                             e.printStackTrace();

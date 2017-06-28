@@ -13,9 +13,9 @@ import java.util.List;
  * Created by titusjuocepis on 6/24/17.
  */
 
-public class AdapterFBPosts extends RecyclerView.Adapter<AdapterFBPosts.ViewHolder> {
+class AdapterFBPosts extends RecyclerView.Adapter<AdapterFBPosts.ViewHolder> {
 
-    List<ModelFBPost> fbPosts;
+    private List<ModelFBPost> fbPosts;
 
     AdapterFBPosts(List<ModelFBPost> posts) {
         fbPosts = posts;
@@ -43,14 +43,20 @@ public class AdapterFBPosts extends RecyclerView.Adapter<AdapterFBPosts.ViewHold
 
             if (post.images.size() == 1)
                 holder.img1.setImageBitmap(post.images.get(0));
-            if (post.images.size() == 2) {
+            else if (post.images.size() == 2) {
                 holder.img1.setImageBitmap(post.images.get(0));
                 holder.img2.setImageBitmap(post.images.get(1));
             }
-            if (post.images.size() == 3) {
+            else if (post.images.size() == 3) {
                 holder.img1.setImageBitmap(post.images.get(0));
                 holder.img2.setImageBitmap(post.images.get(1));
                 holder.img3.setImageBitmap(post.images.get(2));
+            }
+            else {
+                holder.img1.setImageBitmap(post.images.get(0));
+                holder.img2.setImageBitmap(post.images.get(1));
+                holder.img3.setImageBitmap(post.images.get(2));
+                holder.img4.setImageBitmap(post.images.get(3));
             }
         }
 
@@ -64,7 +70,7 @@ public class AdapterFBPosts extends RecyclerView.Adapter<AdapterFBPosts.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView story, time, msg;
-        ImageView img1, img2, img3;
+        ImageView img1, img2, img3, img4;
 
         ViewHolder(View itemView) {
 
@@ -76,6 +82,7 @@ public class AdapterFBPosts extends RecyclerView.Adapter<AdapterFBPosts.ViewHold
             img1 = (ImageView) itemView.findViewById(R.id.fb_post_img1);
             img2 = (ImageView) itemView.findViewById(R.id.fb_post_img2);
             img3 = (ImageView) itemView.findViewById(R.id.fb_post_img3);
+            img4 = (ImageView) itemView.findViewById(R.id.fb_post_img4);
         }
     }
 }

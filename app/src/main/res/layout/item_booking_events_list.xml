@@ -4,17 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:background="@drawable/list_gradient">
-
-    <!--<TextView-->
-        <!--android:id="@+id/text_event"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Event 1"-->
-        <!--android:textSize="24sp"-->
-        <!--android:textStyle="bold"-->
-        <!--android:textColor="@color/colorPrimaryDark"-->
-        />
+    android:layout_marginBottom="8dp"
+    android:background="#191919">
 
     <View
         android:id="@+id/text_event"

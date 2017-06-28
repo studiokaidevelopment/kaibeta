@@ -2,69 +2,132 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:background="@drawable/list_gradient">
+    android:layout_marginBottom="8dp"
+    android:background="#191919">
 
+    <RelativeLayout
+        android:id="@+id/layout_newsfeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-    <ImageView
-        android:id="@+id/kai_thumbnail"
+        <ImageView
+            android:id="@+id/kai_thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/studio_kai_logo_32"/>
+
+        <TextView
+            android:id="@+id/fb_post_story"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/kai_thumbnail"
+            android:layout_toEndOf="@+id/kai_thumbnail"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Sudio Kai added 3 new photos."
+            android:textColor="@color/colorPrimaryDark"/>
+
+        <TextView
+            android:id="@+id/fb_post_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fb_post_story"
+            android:layout_toRightOf="@+id/kai_thumbnail"
+            android:layout_toEndOf="@+id/kai_thumbnail"
+            android:text="22 hrs"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/fb_post_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/kai_thumbnail"
+            android:paddingTop="16dp"
+            android:text="Sudio Kai added 3 new photos."
+            android:textColor="@color/colorAccent"
+            android:minLines="1"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_newsfeed_pics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_newsfeed"
+        android:paddingTop="4dp">
+
+        <ImageView
+            android:id="@+id/fb_post_img1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"/>
+
+        <ImageView
+            android:id="@+id/fb_post_img2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fb_post_img1"
+            android:paddingTop="4dp"/>
+
+        <ImageView
+            android:id="@+id/fb_post_img3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fb_post_img1"
+            android:layout_toRightOf="@+id/fb_post_img2"
+            android:layout_toEndOf="@+id/fb_post_img2"
+            android:paddingTop="4dp"
+            android:paddingLeft="4dp"
+            android:paddingStart="4dp"/>
+
+        <ImageView
+            android:id="@+id/fb_post_img4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/fb_post_img3"
+            android:paddingTop="4dp"
+            android:paddingLeft="4dp"
+            android:paddingStart="4dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_newsfeed_footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/studio_kai_logo_32"/>
+        android:layout_below="@id/layout_newsfeed_pics"
+        android:layout_centerHorizontal="true"
+        android:padding="4dp">
+
+        <ImageView
+            android:id="@+id/image_like1"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:scaleX="-1"
+            android:src="@drawable/ic_hand"/>
+
+        <ImageView
+            android:id="@+id/image_like2"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_toRightOf="@+id/image_like1"
+            android:layout_toEndOf="@+id/image_like1"
+            android:src="@drawable/ic_hand"/>
+
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/fb_post_story"
+        android:id="@+id/text_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/kai_thumbnail"
-        android:layout_toEndOf="@+id/kai_thumbnail"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:text="Sudio Kai added 3 new photos."
-        android:textColor="@color/colorPrimaryDark"/>
-
-    <TextView
-        android:id="@+id/fb_post_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fb_post_story"
-        android:layout_toRightOf="@+id/kai_thumbnail"
-        android:layout_toEndOf="@+id/kai_thumbnail"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:text="22 hrs"
-        android:textSize="10sp"/>
-
-    <TextView
-        android:id="@+id/fb_post_msg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/kai_thumbnail"
-        android:paddingTop="16dp"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:text="Sudio Kai added 3 new photos."
+        android:layout_below="@+id/layout_newsfeed_footer"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="16dp"
+        android:text="Like"
+        android:textSize="10sp"
+        android:textStyle="bold"
         android:textColor="@color/colorAccent"/>
-
-    <ImageView
-        android:id="@+id/fb_post_img1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/fb_post_msg"
-        android:paddingTop="16dp"/>
-
-    <ImageView
-        android:id="@+id/fb_post_img2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/fb_post_img1"
-        android:paddingTop="8dp"/>
-
-    <ImageView
-        android:id="@+id/fb_post_img3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/fb_post_img2"
-        android:paddingTop="8dp"/>
 
 </RelativeLayout>
