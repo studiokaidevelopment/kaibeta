@@ -21,13 +21,6 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         fragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
-    }
-
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-
         fragmentTabHost.setup(getBaseContext(), getSupportFragmentManager(), R.id.realtabcontent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -56,5 +49,11 @@ public class MainActivity extends FragmentActivity {
         for (int i = 0; i < widget.getChildCount(); i++) {
             View tabView = widget.getChildAt(i);
         }
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
     }
 }
