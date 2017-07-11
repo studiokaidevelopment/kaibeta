@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TabWidget;
 
+import com.studiokai.kaibeta.booking.BookingFragment;
+import com.studiokai.kaibeta.newsfeed.NewsFragment;
+
 public class MainActivity extends FragmentActivity {
 
     private FragmentTabHost fragmentTabHost;
@@ -16,9 +19,6 @@ public class MainActivity extends FragmentActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        Intent bookingIntent = new Intent(this, BookingActivity.class);
-//        startActivity(bookingIntent);
 
         fragmentTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
     }
