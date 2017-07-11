@@ -8,7 +8,7 @@ import java.util.List;
  * Created by titusjuocepis on 6/24/17.
  */
 
-public class ModelFBPost {
+class ModelFBPost {
 
     String createdTime, message, story;
     List<String> attachments;
