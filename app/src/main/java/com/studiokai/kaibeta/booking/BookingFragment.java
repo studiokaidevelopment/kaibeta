@@ -27,10 +27,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class BookingFragment extends Fragment implements View.OnClickListener, BookingListener {
 
     private TextView mOutputText, mWarning;
@@ -40,7 +36,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, B
     private List<ModelBookingListItem> selectedTimes;
     private KaiCalendar kaiCalendar;
     private BookingManager bookingManager;
-    private View.OnClickListener clickListener;
+    private View.OnClickListener checkboxListener;
     private RecyclerView recyclerView;
 
     private static DatePickerDialog.OnDateSetListener dateSetListener;
@@ -52,7 +48,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, B
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_booking, container, false);
 
         mOutputText = (TextView) view.findViewById(R.id.text_output);
@@ -65,7 +61,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, B
         selectedTimes = new ArrayList<>();
         kaiCalendar = new KaiCalendar();
         bookingManager = new BookingManager();
-        clickListener = this;
+        checkboxListener = this;
 
         super.onStart();
 
@@ -115,7 +111,7 @@ public class BookingFragment extends Fragment implements View.OnClickListener, B
                     String warning = "We are not open on " + dayOfWeek;
                     updateUI("", View.GONE, warning, View.VISIBLE, buttonDate, View.VISIBLE, null,
                             View.GONE, new AdapterBookingTimes(new ArrayList<ModelBookingListItem>(),
-                                    clickListener));
+                                    checkboxListener));
                 }
                 else {
 
@@ -177,9 +173,9 @@ public class BookingFragment extends Fragment implements View.OnClickListener, B
 
         for (ModelBookingListItem item : selectedTimes) {
 
-            events.add(new ModelEvent(item.getStart(), item.getEnd(), "Studio Kai Session",
+            events.add(new ModelEvent(new ModelTime(item.getStart(), "America/Chicago"), new ModelTime(item.getEnd(), "America/Chicago"), "Studio Kai Session",
                     "1 hour of studio time", "16269 W Woodbine Circle, Vernon Hills IL 60061",
-                    new ArrayList<String>()));
+                    new ArrayList<ModelAttendee>()));
         }
 
         return events;
@@ -257,18 +253,19 @@ public class BookingFragment extends Fragment implements View.OnClickListener, B
 
                 for (ModelEvent item : events) {
 
-                    item.mAttendees.add("tjuocepis@gmail.com");
+                    item.attendees.add(new ModelAttendee("tjuocepis@gmail.com", "Titus Juocepis",
+                            "needsAction"));
 
-                    ModelEvent event = new ModelEvent(item.mStart, item.mEnd,
-                            item.mSummary, item.mDescription,
-                            "16269 W Woodbine Circle, Vernon Hills, IL 60061", item.mAttendees);
+                    ModelEvent event = new ModelEvent(item.start, item.end,
+                            item.summary, item.description,
+                            "16269 W Woodbine Circle, Vernon Hills, IL 60061", item.attendees);
 
                     kaiCalendar.insertEvent(event);
                 }
 
                 updateUI("Select Available Times", View.VISIBLE, "", View.GONE, "Select Date",
                         View.VISIBLE, null, View.GONE, new AdapterBookingTimes(
-                                new ArrayList<ModelBookingListItem>(), clickListener));
+                                new ArrayList<ModelBookingListItem>(), checkboxListener));
 
                 Toast.makeText(getActivity(), "STUDIO KAI thanks you! The " + nEvents +
                                 " should events should appear in your Calendar shortly",
@@ -284,7 +281,6 @@ public class BookingFragment extends Fragment implements View.OnClickListener, B
         });
         alertDialogBuilder.create().show();
     }
-
 
 
     // Date Picker Dialog

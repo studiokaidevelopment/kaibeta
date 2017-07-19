@@ -20,11 +20,11 @@ import java.util.List;
 class AdapterBookingTimes extends RecyclerView.Adapter<AdapterBookingTimes.ViewHolder> {
 
     private List<ModelBookingListItem> bookingTimes;
-    private View.OnClickListener clickListener;
+    private View.OnClickListener checkboxListener;
 
     AdapterBookingTimes(List<ModelBookingListItem> times, View.OnClickListener listener) {
         bookingTimes = times;
-        clickListener = listener;
+        checkboxListener = listener;
     }
 
     @Override
@@ -58,6 +58,7 @@ class AdapterBookingTimes extends RecyclerView.Adapter<AdapterBookingTimes.ViewH
 
     @Override
     public int getItemCount() {
+
         return bookingTimes.size();
     }
 
@@ -74,7 +75,6 @@ class AdapterBookingTimes extends RecyclerView.Adapter<AdapterBookingTimes.ViewH
     }
 
 
-
     // VIEW HOLDER
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -88,7 +88,7 @@ class AdapterBookingTimes extends RecyclerView.Adapter<AdapterBookingTimes.ViewH
             endTime = (TextView) itemView.findViewById(R.id.text_end_time);
             availabilityFlag = (TextView) itemView.findViewById(R.id.text_availability);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkbox);
-            checkBox.setOnClickListener(clickListener);
+            checkBox.setOnClickListener(checkboxListener);
         }
     }
 }

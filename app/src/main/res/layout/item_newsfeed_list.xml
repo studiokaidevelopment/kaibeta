@@ -25,8 +25,7 @@
             android:layout_toEndOf="@+id/kai_thumbnail"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:text="Sudio Kai added 3 new photos."
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="@color/colorPrimaryDark" />
 
         <TextView
             android:id="@+id/fb_post_time"

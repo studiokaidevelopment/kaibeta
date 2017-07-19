@@ -10,11 +10,11 @@ import java.util.List;
 
 class ModelFBPost {
 
-    String createdTime, message, story;
+    String createdTime, message, story, target;
     List<String> attachments;
     List<Bitmap> images;
 
-    ModelFBPost(String time, String msg, String story, List<String> attachments,
+    ModelFBPost(String time, String msg, String story, String target, List<String> attachments,
                 List<Bitmap> attachmentImages) {
 
         createdTime = time;
@@ -22,5 +22,6 @@ class ModelFBPost {
         this.story = story;
         this.attachments = attachments;
         images = attachmentImages;
+        this.target = target;
     }
 }

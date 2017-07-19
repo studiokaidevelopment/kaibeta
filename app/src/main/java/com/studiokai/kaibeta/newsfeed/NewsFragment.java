@@ -1,7 +1,5 @@
 package com.studiokai.kaibeta.newsfeed;
 
-
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,10 +11,6 @@ import android.view.ViewGroup;
 import com.studiokai.kaibeta.MediaFragment;
 import com.studiokai.kaibeta.R;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class NewsFragment extends Fragment {
 
     public NewsFragment() {
@@ -27,7 +21,6 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news, container, false);
 
         FragmentTabHost fragmentTabHost = (FragmentTabHost) v.findViewById(R.id.tab_host);

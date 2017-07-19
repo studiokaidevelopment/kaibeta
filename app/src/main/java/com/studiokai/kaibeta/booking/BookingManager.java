@@ -1,5 +1,7 @@
 package com.studiokai.kaibeta.booking;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,14 +19,10 @@ public class BookingManager implements KaiCalendarListener {
 
     private BookingListener bookingListener;
     private HashMap<String, ModelBookingListItem> allEvents;
-    private List<ModelEvent> existingEvents;
-    private Date selectedDate;
     private String dayOfWeek;
 
     @Override
     public void onEventsLoaded(List<ModelEvent> events) {
-
-        existingEvents = events;
 
         if (events == null) {
             bookingListener.onErrorGettingEvents("There was an error connecting to our server");
@@ -33,7 +31,7 @@ public class BookingManager implements KaiCalendarListener {
 
         dayOfWeek = SelectedDate.getDayOfWeek();
         setAllEvents(SelectedDate.getYear(), SelectedDate.getMonth(), SelectedDate.getDay());
-        setUnavailableEvents(existingEvents);
+        setUnavailableEvents(events);
 
         List<ModelBookingListItem> bookingEventsList = new ArrayList<>(allEvents.values());
         Collections.sort(bookingEventsList, new ModelBookingListItem.BookingListItemComparator());
@@ -43,7 +41,7 @@ public class BookingManager implements KaiCalendarListener {
 
     @Override
     public void onEventInserted(String response) {
-        // TODO
+        Log.d("@@@@@@@@@@@@@@@ :", response);
     }
 
     void setBookingListener(BookingListener listener) {
@@ -73,10 +71,14 @@ public class BookingManager implements KaiCalendarListener {
 
         for (ModelEvent event : existingEvents) {
 
-            String start = event.mStart;
-            String end = event.mEnd;
+            String start = event.start.dateTime;
+            String end = event.end.dateTime;
+
+            Log.d("&&&&&&&&&&&&& :", start + " | " + end);
 
             if (allEvents.containsKey(start)) {
+
+                Log.d("&&&&&&&&&&&&& :", "Contains! - " + start);
 
                 allEvents.remove(start);
                 allEvents.put(start, new ModelBookingListItem(start, end, false));

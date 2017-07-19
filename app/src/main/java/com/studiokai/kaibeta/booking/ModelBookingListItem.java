@@ -1,6 +1,8 @@
 package com.studiokai.kaibeta.booking;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;

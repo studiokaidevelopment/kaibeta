@@ -24,21 +24,15 @@ import java.util.List;
 
 class KaiFacebook {
 
-    private List<ModelFBPost> fbPosts;
     private NewsFeedListener mListener;
 
     KaiFacebook(NewsFeedListener listener) {
-        fbPosts = new ArrayList<>();
         mListener = listener;
     }
 
     void loadPosts() {
         GetKaiFBNewsTask getPostsTask = new GetKaiFBNewsTask();
         getPostsTask.execute();
-    }
-
-    public List<ModelFBPost> getFbPosts() {
-        return fbPosts;
     }
 
     private class GetKaiFBNewsTask extends AsyncTask<String, Void, String> {
@@ -53,45 +47,69 @@ class KaiFacebook {
 
             super.onPostExecute(s);
 
-            JSONObject jsonObject = null;
+            List<ModelFBPost> fbPosts = parseKaiFBNewsResponse(s);
+            mListener.onFBPostsLoaded(fbPosts);
 
-            try {
-                jsonObject = new JSONObject(s);
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return;
-            }
+            DownloadBitmapsTask getBitmaps = new DownloadBitmapsTask(fbPosts);
+            getBitmaps.execute();
+        }
+    };
 
-            JSONArray json = null;
+    private List<ModelFBPost> parseKaiFBNewsResponse(String response) {
+
+        List<ModelFBPost> fbPosts = new ArrayList<>();
+        JSONArray jsonArray;
+
+        try {
+            jsonArray = new JSONArray(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+
+            String createdTime = "", message = "", story = "", target = "";
+            List<String> mAttachments = new ArrayList<>();
+
+            JSONObject json = null;
             try {
-                json = jsonObject.getJSONArray("posts");
+                json = jsonArray.getJSONObject(i);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             if (json != null) {
 
-                for (int i = 0; i < json.length(); i++) {
+                try {
+                    createdTime = json.getString("created_time");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    story = json.getString("story");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    message = json.getString("message");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    target = json.getString("target");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                    String createdTime = "", message = "", story = "";
-                    List<String> mAttachments = new ArrayList<>();
+                JSONArray attachments = null;
+                try {
+                    attachments = json.getJSONArray("attachments");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                    try {
-                        createdTime = json.getJSONObject(i).getString("created_time");
-                        message = json.getJSONObject(i).getString("message");
-                        story = json.getJSONObject(i).getString("story");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    JSONArray attachments = null;
-                    try {
-                        attachments = json.getJSONObject(i).getJSONArray("attachments");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    assert attachments != null;
+                if (attachments != null) {
                     for (int k = 0; k < attachments.length(); k++) {
                         try {
                             mAttachments.add(attachments.getString(k));
@@ -99,73 +117,28 @@ class KaiFacebook {
                             e.printStackTrace();
                         }
                     }
-
-                    ModelFBPost post = new ModelFBPost(createdTime, message, story, mAttachments,
-                            new ArrayList<Bitmap>());
-                    fbPosts.add(post);
                 }
 
-                mListener.onFBPostsLoaded(fbPosts);
-
-                GetBitmapsTask getBitmaps = new GetBitmapsTask(fbPosts);
-                getBitmaps.execute();
+                ModelFBPost post = new ModelFBPost(createdTime, message, story, target, mAttachments,
+                        new ArrayList<Bitmap>());
+                fbPosts.add(post);
             }
         }
-    };
+        return fbPosts;
+    }
 
-    private class GetBitmapsTask extends AsyncTask<String, Void, List<ModelFBPost>> {
+    private class DownloadBitmapsTask extends AsyncTask<String, Void, List<ModelFBPost>> {
 
-        List<ModelFBPost> mPosts;
+        private final List<ModelFBPost> mPosts;
 
-        GetBitmapsTask(List<ModelFBPost> posts) {
+        DownloadBitmapsTask(List<ModelFBPost> posts) {
             mPosts = posts;
         }
 
         @Override
         protected List<ModelFBPost> doInBackground(String... params) {
 
-
-                List<Bitmap> images = new ArrayList<>();
-
-                for (ModelFBPost post : mPosts) {
-
-                    boolean resizePic = true;
-
-                    for (String mUrl : post.attachments) {
-
-                        try {
-                            URL url = new URL(mUrl);
-                            HttpURLConnection connection = null;
-                            connection = (HttpURLConnection) url.openConnection();
-                            connection.setDoInput(true);
-                            connection.connect();
-
-                            InputStream input = connection.getInputStream();
-                            Bitmap fbPostPic = BitmapFactory.decodeStream(input);
-
-                            double width = fbPostPic.getWidth();
-                            double height = fbPostPic.getHeight();
-
-                            Log.d("[BITMAP] ---> ", width + " " + height);
-
-                            if (resizePic) {
-                                width = width * 2;
-                                height = height * 2;
-                                resizePic = false;
-                                post.images.add(Bitmap.createScaledBitmap(fbPostPic, (int)width,
-                                        (int)height, false));
-                            }
-                            else {
-                                post.images.add(Bitmap.createBitmap(fbPostPic, 0, 0, 720, 450));
-                            }
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            return null;
-                        }
-                    }
-                }
-                return mPosts;
+            return downloadBitmaps(mPosts);
         }
 
         @Override
@@ -174,6 +147,49 @@ class KaiFacebook {
             super.onPostExecute(posts);
 
             mListener.onFBPostImagesLoaded(posts);
+        }
+
+        private List<ModelFBPost> downloadBitmaps(List<ModelFBPost> fbPosts) {
+
+            for (ModelFBPost post : mPosts) {
+
+                boolean resizePic = true;
+
+                for (String mUrl : post.attachments) {
+
+                    try {
+                        URL url = new URL(mUrl);
+                        HttpURLConnection connection = null;
+                        connection = (HttpURLConnection) url.openConnection();
+                        connection.setDoInput(true);
+                        connection.connect();
+
+                        InputStream input = connection.getInputStream();
+                        Bitmap fbPostPic = BitmapFactory.decodeStream(input);
+
+                        double width = fbPostPic.getWidth();
+                        double height = fbPostPic.getHeight();
+
+                        Log.d("[BITMAP] ---> ", width + " " + height);
+
+                        if (resizePic) {
+                            width = width * 2;
+                            height = height * 2;
+                            resizePic = false;
+                            post.images.add(Bitmap.createScaledBitmap(fbPostPic, (int)width,
+                                    (int)height, false));
+                        }
+                        else {
+                            post.images.add(Bitmap.createBitmap(fbPostPic, 0, 0, 720, 450));
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+            }
+            return mPosts;
         }
     }
 }

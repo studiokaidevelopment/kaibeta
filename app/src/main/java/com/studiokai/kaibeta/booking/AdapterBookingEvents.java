@@ -22,7 +22,6 @@ import java.util.List;
 class AdapterBookingEvents extends RecyclerView.Adapter<AdapterBookingEvents.ViewHolder> {
 
     private List<ModelEvent> bookingEvents;
-    private AdapterBookingEvents.ViewHolder viewHolder;
 
     AdapterBookingEvents(List<ModelEvent> events) {
         bookingEvents = events;
@@ -34,12 +33,10 @@ class AdapterBookingEvents extends RecyclerView.Adapter<AdapterBookingEvents.Vie
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_booking_events_list, parent, false);
 
-        viewHolder = new ViewHolder(view);
-
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
-    public List<ModelEvent> getBookingEvents() {
+    List<ModelEvent> getBookingEvents() {
         return bookingEvents;
     }
 
@@ -47,15 +44,15 @@ class AdapterBookingEvents extends RecyclerView.Adapter<AdapterBookingEvents.Vie
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         ModelEvent event = bookingEvents.get(position);
-        holder.textStartTime.setText(UtilityDate.convertToTime(event.mStart));
-        holder.textEndTime.setText(UtilityDate.convertToTime(event.mEnd));
+        holder.textStartTime.setText(UtilityDate.convertToTime(event.start.dateTime));
+        holder.textEndTime.setText(UtilityDate.convertToTime(event.end.dateTime));
 
         holder.editTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
 
                 EditText editText = (EditText) v;
-                bookingEvents.get(position).mSummary = editText.getText().toString();
+                bookingEvents.get(position).summary = editText.getText().toString();
             }
         });
 
@@ -64,7 +61,7 @@ class AdapterBookingEvents extends RecyclerView.Adapter<AdapterBookingEvents.Vie
             public void onFocusChange(View v, boolean hasFocus) {
 
                 EditText editText = (EditText) v;
-                bookingEvents.get(position).mDescription = editText.getText().toString();
+                bookingEvents.get(position).description = editText.getText().toString();
             }
         });
 
@@ -72,31 +69,17 @@ class AdapterBookingEvents extends RecyclerView.Adapter<AdapterBookingEvents.Vie
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
 
-                bookingEvents.get(position).mAttendees = new ArrayList<>();
+                bookingEvents.get(position).attendees = new ArrayList<>();
 
                 EditText editText = (EditText) v;
                 String[] guests = editText.getText().toString().split(", ");
 
                 for (String guest : guests) {
-                    Log.d("[ADAPTER] ---> ", guest);
+                    bookingEvents.get(position).attendees.add(new ModelAttendee(guest, "", "notConfirmed"));
                 }
-                Collections.addAll(bookingEvents.get(position).mAttendees, guests);
-
-                for (String s : bookingEvents.get(position).mAttendees)
-                    Log.d("[ADAPTER] --->", s);
             }
         });
     }
-
-//    @Override
-//    public void onViewDetachedFromWindow(ViewHolder holder) {
-//
-//        super.onViewDetachedFromWindow(holder);
-//
-//        holder.editTitle.setOnFocusChangeListener(null);
-//        holder.editDescription.setOnFocusChangeListener(null);
-//        holder.editGuests.setOnFocusChangeListener(null);
-//    }
 
     @Override
     public int getItemCount() {

@@ -7,28 +7,29 @@ import java.util.List;
  * Created by titusjuocepis on 6/20/17.
  */
 
-class ModelEvent {
+public class ModelEvent {
 
-    String mStart, mEnd, mSummary, mDescription, mLocation;
-    List<String> mAttendees;
+    String summary, description, location;
+    ModelTime start, end;
+    List<ModelAttendee> attendees;
 
-    ModelEvent(String start, String end, String summary, String description, String location,
-               List<String> attendees) {
+    ModelEvent(ModelTime start, ModelTime end, String summary, String description, String location,
+               List<ModelAttendee> attendees) {
 
-        mStart = start;
-        mEnd = end;
-        mSummary = summary;
-        mDescription = description;
-        mLocation = location;
-        mAttendees = attendees;
+        this.start = start;
+        this.end = end;
+        this.summary = summary;
+        this.description = description;
+        this.location = location;
+        this.attendees = attendees;
     }
 
-    ModelEvent(String start, String end) {
-        mStart = start;
-        mEnd = end;
-        mSummary = "";
-        mDescription = "";
-        mLocation = "";
-        mAttendees = new ArrayList<>();
+    ModelEvent(ModelTime start, ModelTime end) {
+        this.start = start;
+        this.end = end;
+        summary = "";
+        description = "";
+        location = "";
+        attendees = new ArrayList<>();
     }
 }

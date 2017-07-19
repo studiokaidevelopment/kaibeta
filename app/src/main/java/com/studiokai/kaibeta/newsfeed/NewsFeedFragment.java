@@ -35,7 +35,6 @@ public class NewsFeedFragment extends Fragment implements NewsFeedListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_news_feed, container, false);
 
         recyclerView = (RecyclerView) v.findViewById(R.id.fb_post_list);
@@ -49,7 +48,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedListener {
     @Override
     public void onFBPostsLoaded(List<ModelFBPost> posts) {
 
-        AdapterFBPosts adapter = new AdapterFBPosts(posts);
+        AdapterFBPosts adapter = new AdapterFBPosts(posts, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
@@ -58,7 +57,7 @@ public class NewsFeedFragment extends Fragment implements NewsFeedListener {
     @Override
     public void onFBPostImagesLoaded(List<ModelFBPost> posts) {
 
-        AdapterFBPosts adapter = new AdapterFBPosts(posts);
+        AdapterFBPosts adapter = new AdapterFBPosts(posts, getContext());
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
